@@ -1,0 +1,21 @@
+{
+  "name": "smart-plant-watering-iot-hub",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "npx ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "azure-iot-device": "^1.11.1",
+    "azure-iot-device-mqtt": "^1.10.2",
+    "dotenv": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^10.0.3",
+    "typescript": "^3.6.2"
+  }
+}
