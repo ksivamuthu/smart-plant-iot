@@ -1,0 +1,19 @@
+{
+  "name": "smart-plant-watering",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client-symlink": "npx symlink-dir kiosk smart-plant-watering-iot-hub/kiosk && npx symlink-dir kiosk smart-plant-watering-iot-edge/SmartPlantIoTEdgeSolution/modules/Kiosk/client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ksivamuthu/smart-plant-iot.git"
+  },
+  "author": "ksivamuthu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ksivamuthu/smart-plant-iot/issues"
+  },
+  "homepage": "https://github.com/ksivamuthu/smart-plant-iot#readme"
+}
