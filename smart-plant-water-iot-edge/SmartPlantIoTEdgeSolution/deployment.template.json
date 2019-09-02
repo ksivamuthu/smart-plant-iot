@@ -70,6 +70,86 @@
               "image": "${MODULES.WindSensor}",
               "createOptions": {}
             }
+          },
+          "SoilMoistureSensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.SoilMoistureSensor}",
+              "createOptions": {}
+            }
+          },
+          "HumiditySensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.HumiditySensor}",
+              "createOptions": {}
+            }
+          },
+          "WaterflowSensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.WaterflowSensor}",
+              "createOptions": {}
+            }
+          },
+          "PlantWatering": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.PlantWatering}",
+              "createOptions": {}
+            }
+          },
+          "Kiosk": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Kiosk}",
+              "createOptions": {}
+            }
+          },
+          "CameraCapture": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.CameraCapture}",
+              "createOptions": {}
+            }
+          },
+          "ImageClassifier": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ImageClassifier}",
+              "createOptions": {}
+            }
+          },
+          "SensorDataFilter": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.SensorDataFilter}",
+              "createOptions": {}
+            }
           }
         }
       }
@@ -78,8 +158,13 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-          "TemperatureSensorToIoTHub": "FROM /messages/modules/TemperatureSensor/outputs/* INTO $upstream",
-          "WindSensorToIoTHub": "FROM /messages/modules/WindSensor/outputs/* INTO $upstream"
+          "TemperatureSensorToFilter": "FROM /messages/modules/TemperatureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "WindSensorToFilter": "FROM /messages/modules/WindSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "HumiditySensorToFilter": "FROM /messages/modules/HumiditySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "SoilMoistureSensorToFilter": "FROM /messages/modules/SoilMoistureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "WaterflowSensorToFilter": "FROM /messages/modules/WaterflowSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "FilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream",
+          "SensorDataFilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

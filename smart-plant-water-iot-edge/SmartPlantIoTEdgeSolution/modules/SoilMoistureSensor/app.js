@@ -42,17 +42,21 @@ function startMonitoring(client) {
   setInterval(async () => {
     const data = await read();
     var msg = new Message(JSON.stringify(data));
-    client.sendOutputEvent('temperatureSensorOutput', msg, printResultFor('Sending sensor message'));
+    client.sendOutputEvent('output', msg, printResultFor('Sending sensor message'));
   }, 5000);
 }
 
-const windDirections = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
+const min = 0, max = 880;
+let currentMoisture = 400;
 
 async function read() {
-  const randomIndex = Math.round(randomInt(0, 7));
+  if (currentMoisture > max)
+    currentMoisture += Math.random() - 50;
+  else
+    currentMoisture += -50 + (Math.random() * 50);
+
   return {
-    speed: randomInt(3, 25),
-    direction: windDirections[randomIndex]
+    moisture: currentMoisture
   };
 }
 

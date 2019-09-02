@@ -96,6 +96,213 @@
                 }
               }
             }
+          },
+          "SoilMoistureSensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.SoilMoistureSensor.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "HumiditySensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.HumiditySensor.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "LuminositySensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.LuminositySensor.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "WaterflowSensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.WaterflowSensor.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "PlantWatering": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.PlantWatering.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "Kiosk": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Kiosk.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "CameraCapture": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.CameraCapture.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "ImageClassifier": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ImageClassifier.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "5678/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "5678/tcp": [
+                      {
+                        "HostPort": "5678"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "SensorDataFilter": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.SensorDataFilter.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -104,8 +311,13 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
-          "TemperatureSensorToIoTHub": "FROM /messages/modules/TemperatureSensor/outputs/* INTO $upstream",
-          "WindSensorToIoTHub": "FROM /messages/modules/WindSensor/outputs/* INTO $upstream"
+          "TemperatureSensorToFilter": "FROM /messages/modules/TemperatureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "WindSensorToFilter": "FROM /messages/modules/WindSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "HumiditySensorToFilter": "FROM /messages/modules/HumiditySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "SoilMoistureSensorToFilter": "FROM /messages/modules/SoilMoistureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "WaterflowSensorToFilter": "FROM /messages/modules/WaterflowSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "FilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream",
+          "SensorDataFilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

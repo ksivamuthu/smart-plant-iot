@@ -42,17 +42,13 @@ function startMonitoring(client) {
   setInterval(async () => {
     const data = await read();
     var msg = new Message(JSON.stringify(data));
-    client.sendOutputEvent('temperatureSensorOutput', msg, printResultFor('Sending sensor message'));
+    client.sendOutputEvent('output', msg, printResultFor('Sending sensor message'));
   }, 5000);
 }
 
-const windDirections = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
-
 async function read() {
-  const randomIndex = Math.round(randomInt(0, 7));
   return {
-    speed: randomInt(3, 25),
-    direction: windDirections[randomIndex]
+    luminosity: randomInt(1000, 1500)
   };
 }
 

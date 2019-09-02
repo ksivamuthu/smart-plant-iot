@@ -4,6 +4,7 @@ var Transport = require('azure-iot-device-mqtt').Mqtt;
 var Client = require('azure-iot-device').ModuleClient;
 var Message = require('azure-iot-device').Message;
 
+
 Client.fromEnvironment(Transport, function (err, client) {
   if (err) {
     throw err;
@@ -18,28 +19,12 @@ Client.fromEnvironment(Transport, function (err, client) {
         throw err;
       } else {
         console.log('IoT Hub module client initialized');
-
-        // Act on input messages to the module.
-        client.on('inputMessage', function (inputName, msg) {
-          pipeMessage(client, inputName, msg);
-        });
+        startMonitoring(client);
       }
     });
   }
 });
 
-// This function just pipes the messages without any change.
-function pipeMessage(client, inputName, msg) {
-  client.complete(msg, printResultFor('Receiving message'));
-
-  if (inputName === 'input1') {
-    var message = msg.getBytes().toString('utf8');
-    if (message) {
-      var outputMsg = new Message(message);
-      client.sendOutputEvent('output1', outputMsg, printResultFor('Sending received message'));
-    }
-  }
-}
 
 // Helper function to print results in the console
 function printResultFor(op) {
@@ -51,4 +36,25 @@ function printResultFor(op) {
       console.log(op + ' status: ' + res.constructor.name);
     }
   };
+}
+
+function startMonitoring(client) {
+  setInterval(async () => {
+    const data = await read();
+    var msg = new Message(JSON.stringify(data));
+    client.sendOutputEvent('temperatureSensorOutput', msg, printResultFor('Sending sensor message'));
+  }, 5000);
+}
+
+const min = 20;
+const max = 100;
+let currentTemp = 30;
+
+async function read() {
+  if (currentTemp > max)
+    currentTemp += Math.random() - 0.5;
+  else
+    currentTemp += -0.25 + (Math.random() * 1.5);
+
+  return currentTemp;
 }
