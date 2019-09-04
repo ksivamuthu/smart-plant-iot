@@ -3,7 +3,7 @@ export class LuminositySensor {
     constructor() { }
     async read(): Promise<{ luminosity: number }> {
         return {
-            luminosity: randomInt(1000, 1500)
+            luminosity: randomInt(500.0, 800.0)
         };
     }
 }

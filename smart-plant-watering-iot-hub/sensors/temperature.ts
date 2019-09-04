@@ -1,7 +1,7 @@
 export class TemperatureSensor {
     constructor() { }
-    min = 20; max = 100;
-    currentTemp = 30;
+    min = 20.0; max = 100.0;
+    currentTemp = 30.0;
 
     async read(): Promise<{ temperature: number }> {
         if (this.currentTemp > this.max)

@@ -3,17 +3,22 @@ import { LuminositySensor } from './luminosity';
 import { SoilMoistureSensor } from './soilmoisture';
 import { TemperatureSensor } from './temperature';
 import { WindSensor } from './wind';
-import { Client, Message } from 'azure-iot-device';
+import { EventEmitter } from 'events';
+import { PressureSensor } from './pressure';
 
-export class Sensors {
+export class Sensors extends EventEmitter {
     private windSensor: WindSensor = new WindSensor();
     private temperatureSensor: TemperatureSensor = new TemperatureSensor();
     private soilMoistureSensor: SoilMoistureSensor = new SoilMoistureSensor();
     private luminositySensor: LuminositySensor = new LuminositySensor();
     private humiditySensor: HumiditySensor = new HumiditySensor();
+    private pressureSensor: PressureSensor = new PressureSensor();
 
-    constructor(private readonly client: Client) {
-
+    constructor() {
+        super();
+        this.on('watering', (data) => {
+            this.soilMoistureSensor.water(data);
+        });
     }
 
     startMonitoring() {
@@ -26,10 +31,12 @@ export class Sensors {
         const soil = await this.soilMoistureSensor.read();
         const luminosity = await this.luminositySensor.read();
         const humidity = await this.humiditySensor.read();
+        const pressure = await this.pressureSensor.read();
         const deviceId = process.env.DEVICE_ID;
         const data = {
-            deviceId, ...wind, ...temperature, ...soil, ...luminosity, ...humidity
+            deviceId, ...wind, ...temperature, ...soil, ...luminosity, ...humidity, ...pressure
         };
-        await this.client.sendEvent(new Message(JSON.stringify(data)));
+
+        this.emit('SensorsDataReceived', data);
     }
 }
