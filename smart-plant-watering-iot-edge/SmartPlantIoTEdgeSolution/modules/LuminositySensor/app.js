@@ -48,10 +48,10 @@ function startMonitoring(client) {
 
 async function read() {
   return {
-    luminosity: randomInt(1000, 1500)
+    luminosity: randomInt(500.0, 800.0)
   };
 }
 
 function randomInt(min, max) {
-  return Math.random() * (max - min + 1) + min;
+  return parseFloat((Math.random() * (max - min + 1) + min).toFixed(2));
 }

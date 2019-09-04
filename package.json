@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-symlink": "npx symlink-dir kiosk smart-plant-watering-iot-hub/kiosk && npx symlink-dir kiosk smart-plant-watering-iot-edge/SmartPlantIoTEdgeSolution/modules/Kiosk/client"
+    "client-symlink": "npx symlink-dir smart-plant-watering-iot-edge/SmartPlantIoTEdgeSolution/modules/Kiosk/client smart-plant-watering-iot-hub/kiosk && npx symlink-dir smart-plant-watering-iot-edge/SmartPlantIoTEdgeSolution/modules/Kiosk/client kiosk"
   },
   "repository": {
     "type": "git",

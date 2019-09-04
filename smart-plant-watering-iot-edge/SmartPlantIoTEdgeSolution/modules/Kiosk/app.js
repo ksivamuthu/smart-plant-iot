@@ -3,6 +3,7 @@
 var Transport = require('azure-iot-device-mqtt').Mqtt;
 var Client = require('azure-iot-device').ModuleClient;
 var Message = require('azure-iot-device').Message;
+var server = require('./server');
 
 Client.fromEnvironment(Transport, function (err, client) {
   if (err) {
@@ -18,6 +19,8 @@ Client.fromEnvironment(Transport, function (err, client) {
         throw err;
       } else {
         console.log('IoT Hub module client initialized');
+
+        server.listen();
 
         // Act on input messages to the module.
         client.on('inputMessage', function (inputName, msg) {

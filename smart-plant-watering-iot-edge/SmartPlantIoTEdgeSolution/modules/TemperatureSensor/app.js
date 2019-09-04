@@ -46,9 +46,9 @@ function startMonitoring(client) {
   }, 5000);
 }
 
-const min = 20;
-const max = 100;
-let currentTemp = 30;
+const min = 20.0;
+const max = 100.0;
+let currentTemp = 30.0;
 
 async function read() {
   if (currentTemp > max)
@@ -56,5 +56,5 @@ async function read() {
   else
     currentTemp += -0.25 + (Math.random() * 1.5);
 
-  return currentTemp;
+  return parseFloat(currentTemp.toFixed(2));
 }

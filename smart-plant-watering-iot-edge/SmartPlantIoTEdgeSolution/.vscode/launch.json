@@ -107,27 +107,6 @@
       }
     },
     {
-      "name": "WaterflowSensor Remote Debug (Node.js)",
-      "type": "node",
-      "request": "attach",
-      "port": 9229,
-      "address": "localhost",
-      "localRoot": "${workspaceRoot}/modules/WaterflowSensor",
-      "remoteRoot": "/app",
-      "protocol": "inspector"
-    },
-    {
-      "name": "WaterflowSensor Local Debug (Node.js)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceRoot}/modules/WaterflowSensor/app.js",
-      "console": "integratedTerminal",
-      "env": {
-        "EdgeHubConnectionString": "${config:azure-iot-edge.EdgeHubConnectionString}",
-        "EdgeModuleCACertificateFile": "${config:azure-iot-edge.EdgeModuleCACertificateFile}"
-      }
-    },
-    {
       "name": "SensorDataFilter Remote Debug (Node.js)",
       "type": "node",
       "request": "attach",
@@ -249,6 +228,27 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/modules/SensorDataFilter/app.js",
+      "console": "integratedTerminal",
+      "env": {
+        "EdgeHubConnectionString": "${config:azure-iot-edge.EdgeHubConnectionString}",
+        "EdgeModuleCACertificateFile": "${config:azure-iot-edge.EdgeModuleCACertificateFile}"
+      }
+    },
+    {
+      "name": "PressureSensor Remote Debug (Node.js)",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "address": "localhost",
+      "localRoot": "${workspaceRoot}/modules/PressureSensor",
+      "remoteRoot": "/app",
+      "protocol": "inspector"
+    },
+    {
+      "name": "PressureSensor Local Debug (Node.js)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/modules/PressureSensor/app.js",
       "console": "integratedTerminal",
       "env": {
         "EdgeHubConnectionString": "${config:azure-iot-edge.EdgeHubConnectionString}",

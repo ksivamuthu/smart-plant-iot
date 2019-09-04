@@ -53,5 +53,5 @@ async function read() {
 }
 
 function randomInt(min, max) {
-  return Math.random() * (max - min + 1) + min;
+  return parseFloat((Math.random() * (max - min + 1) + min).toFixed(2));
 }

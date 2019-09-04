@@ -46,20 +46,52 @@ function startMonitoring(client) {
   }, 5000);
 }
 
-const min = 0, max = 880;
-let currentMoisture = 400;
+let min = 0.0; let max = 100.0;
+let currentMoisture = 100.0;
+let watering = false;
+let waterlevel = 0.0;
 
 async function read() {
-  if (currentMoisture > max)
-    currentMoisture += Math.random() - 50;
-  else
-    currentMoisture += -50 + (Math.random() * 50);
+
+  if (watering === false) {
+    currentMoisture += -5.0 + (Math.random() * 1.5);
+  }
+
+  if (currentMoisture <= min) {
+    currentMoisture = 0.0;
+  }
 
   return {
+    waterlevel: watering ? randomInt(20, 50) : 0.0,
+    watering: watering,
     moisture: currentMoisture
   };
 }
 
+async function water(level) {
+
+  watering = true;
+
+  if (level >= max) level = max;
+
+  while (currentMoisture <= level) {
+    currentMoisture += 2.5;
+    await delay(300);
+  }
+
+  if (currentMoisture >= max) currentMoisture = max;
+
+  watering = false;
+
+  return {
+    moisture: currentMoisture
+  }
+}
+
+async function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function randomInt(min, max) {
-  return Math.random() * (max - min + 1) + min;
+  return parseFloat((Math.random() * (max - min + 1) + min).toFixed(2));
 }

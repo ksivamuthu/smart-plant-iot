@@ -166,29 +166,6 @@
               }
             }
           },
-          "WaterflowSensor": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULES.WaterflowSensor.debug}",
-              "createOptions": {
-                "ExposedPorts": {
-                  "9229/tcp": {}
-                },
-                "HostConfig": {
-                  "PortBindings": {
-                    "9229/tcp": [
-                      {
-                        "HostPort": "9229"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          },
           "PlantWatering": {
             "version": "1.0",
             "type": "docker",
@@ -221,13 +198,19 @@
               "image": "${MODULES.Kiosk.debug}",
               "createOptions": {
                 "ExposedPorts": {
-                  "9229/tcp": {}
+                  "9229/tcp": {},
+                  "3000/tcp": {}
                 },
                 "HostConfig": {
                   "PortBindings": {
                     "9229/tcp": [
                       {
                         "HostPort": "9229"
+                      }
+                    ],
+                    "3000/tcp": [
+                      {
+                        "HostPort": "3000"
                       }
                     ]
                   }
@@ -303,6 +286,29 @@
                 }
               }
             }
+          },
+          "PressureSensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.PressureSensor.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -315,7 +321,7 @@
           "WindSensorToFilter": "FROM /messages/modules/WindSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "HumiditySensorToFilter": "FROM /messages/modules/HumiditySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "SoilMoistureSensorToFilter": "FROM /messages/modules/SoilMoistureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
-          "WaterflowSensorToFilter": "FROM /messages/modules/WaterflowSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "PressureSensorToFilter": "FROM /messages/modules/PressureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "FilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream",
           "SensorDataFilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream"
         },

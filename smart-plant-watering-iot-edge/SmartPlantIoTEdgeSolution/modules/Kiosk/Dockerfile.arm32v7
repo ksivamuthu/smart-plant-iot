@@ -1,13 +1,28 @@
-FROM arm32v7/node:8-slim
+FROM arm32v7/node:10-slim as build
 
 WORKDIR /app/
-
 COPY package*.json ./
+RUN npm install
 
-RUN npm install --production
+WORKDIR /client/
+RUN npm install -g @angular/cli
+COPY client/ ./
+RUN npm install
+RUN npm run build
 
+WORKDIR /app/
 COPY app.js ./
+COPY server.js ./
+
+WORKDIR /app/client/dist
+RUN cp -a /client/dist/kiosk/ .
+
+FROM arm32v7/node:10-slim as final
+WORKDIR /app/
+COPY --from=build /app/ .
 
 USER node
+
+EXPOSE 3000
 
 CMD ["node", "app.js"]
