@@ -56,5 +56,5 @@ async function read() {
   else
     currentTemp += -0.25 + (Math.random() * 1.5);
 
-  return parseFloat(currentTemp.toFixed(2));
+  return { temperature: parseFloat(currentTemp.toFixed(2)) };
 }

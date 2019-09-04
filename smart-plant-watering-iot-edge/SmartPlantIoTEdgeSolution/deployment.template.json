@@ -163,6 +163,16 @@
               "image": "${MODULES.PressureSensor}",
               "createOptions": {}
             }
+          },
+          "LuminositySensor": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.LuminositySensor}",
+              "createOptions": {}
+            }
           }
         }
       }
@@ -174,10 +184,10 @@
           "TemperatureSensorToFilter": "FROM /messages/modules/TemperatureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "WindSensorToFilter": "FROM /messages/modules/WindSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "HumiditySensorToFilter": "FROM /messages/modules/HumiditySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "LuminositySensorToFilter": "FROM /messages/modules/LuminositySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "SoilMoistureSensorToFilter": "FROM /messages/modules/SoilMoistureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "PressureSensorToFilter": "FROM /messages/modules/PressureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
-          "FilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream",
-          "SensorDataFilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/* INTO $upstream"
+          "FilterToKiosk": "FROM /messages/modules/SensorDataFilter/outputs/KioskOutput INTO BrokeredEndpoint(\"/modules/Kiosk/inputs/sensorsInput\")"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

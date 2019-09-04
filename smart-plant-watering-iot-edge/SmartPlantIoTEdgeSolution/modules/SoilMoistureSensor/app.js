@@ -39,6 +39,11 @@ function printResultFor(op) {
 }
 
 function startMonitoring(client) {
+  client.onMethod('watering', async (req, res) => {
+    await res.send(201);
+    await water(req.payload);
+  });
+
   setInterval(async () => {
     const data = await read();
     var msg = new Message(JSON.stringify(data));
@@ -75,7 +80,7 @@ async function water(level) {
   if (level >= max) level = max;
 
   while (currentMoisture <= level) {
-    currentMoisture += 2.5;
+    currentMoisture += 1.5;
     await delay(300);
   }
 

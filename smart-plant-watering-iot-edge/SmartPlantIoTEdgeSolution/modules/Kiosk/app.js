@@ -31,15 +31,19 @@ Client.fromEnvironment(Transport, function (err, client) {
   }
 });
 
+var data = {};
+
 // This function just pipes the messages without any change.
 function pipeMessage(client, inputName, msg) {
   client.complete(msg, printResultFor('Receiving message'));
 
-  if (inputName === 'input1') {
+  if (inputName === 'sensorsInput') {
     var message = msg.getBytes().toString('utf8');
     if (message) {
-      var outputMsg = new Message(message);
-      client.sendOutputEvent('output1', outputMsg, printResultFor('Sending received message'));
+      var outputMsg = JSON.parse(message);
+      data = { ...data, ...outputMsg };
+      console.log(data);
+      server.send(data);
     }
   }
 }

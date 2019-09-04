@@ -42,7 +42,7 @@ function startMonitoring(client) {
   setInterval(async () => {
     const data = await read();
     var msg = new Message(JSON.stringify(data));
-    client.sendOutputEvent('temperatureSensorOutput', msg, printResultFor('Sending sensor message'));
+    client.sendOutputEvent('output', msg, printResultFor('Sending sensor message'));
   }, 5000);
 }
 
@@ -56,5 +56,5 @@ async function read() {
   else
     currentPressure += -0.25 + (Math.random() * 1.5);
 
-  return parseFloat(currentPressure.toFixed(2));
+  return { pressure: parseFloat(currentPressure.toFixed(2)) };
 }

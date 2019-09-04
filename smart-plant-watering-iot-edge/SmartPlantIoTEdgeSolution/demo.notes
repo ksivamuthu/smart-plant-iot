@@ -1,0 +1,1 @@
+//// "FilterToIoTHub": "FROM /messages/modules/SensorDataFilter/outputs/IoTHubOutput INTO $upstream",
