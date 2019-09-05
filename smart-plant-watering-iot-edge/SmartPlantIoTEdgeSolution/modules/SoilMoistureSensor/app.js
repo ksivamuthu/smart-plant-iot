@@ -38,6 +38,9 @@ function printResultFor(op) {
   };
 }
 
+/**
+ * @param {Client} client - Module Client
+ */
 function startMonitoring(client) {
   client.onMethod('watering', async (req, res) => {
     await res.send(201);
@@ -55,12 +58,16 @@ let min = 0.0; let max = 100.0;
 let currentMoisture = 100.0;
 let watering = false;
 let waterlevel = 0.0;
+let after = 0;
 
 async function read() {
 
-  if (watering === false) {
-    currentMoisture += -5.0 + (Math.random() * 1.5);
+  if (watering === false && after > 5) {
+    after = 0;
+    currentMoisture += -10.0 + (Math.random() * 1.5);
   }
+
+  after = after + 1;
 
   if (currentMoisture <= min) {
     currentMoisture = 0.0;
@@ -83,6 +90,9 @@ async function water(level) {
     currentMoisture += 1.5;
     await delay(300);
   }
+
+  currentMoisture = level;
+  await delay(1000);
 
   if (currentMoisture >= max) currentMoisture = max;
 

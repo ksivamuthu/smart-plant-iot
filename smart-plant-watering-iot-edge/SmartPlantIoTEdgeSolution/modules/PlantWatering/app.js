@@ -3,6 +3,10 @@
 var Transport = require('azure-iot-device-mqtt').Mqtt;
 var Client = require('azure-iot-device').ModuleClient;
 var Message = require('azure-iot-device').Message;
+var ConnectionString = require('azure-iot-common').ConnectionString;
+
+const connectionString = process.env.EdgeHubConnectionString || process.env.IotHubConnectionString;
+const env = ConnectionString.parse(connectionString);
 
 Client.fromEnvironment(Transport, function (err, client) {
   if (err) {
@@ -13,11 +17,12 @@ Client.fromEnvironment(Transport, function (err, client) {
     });
 
     // connect to the Edge instance
-    client.open(function (err) {
+    client.open((err) => {
       if (err) {
         throw err;
       } else {
         console.log('IoT Hub module client initialized');
+
 
         // Act on input messages to the module.
         client.on('inputMessage', function (inputName, msg) {
@@ -28,15 +33,25 @@ Client.fromEnvironment(Transport, function (err, client) {
   }
 });
 
-// This function just pipes the messages without any change.
-function pipeMessage(client, inputName, msg) {
+/**
+ * @param {Client} client - Module Client
+ */
+async function pipeMessage(client, inputName, msg) {
   client.complete(msg, printResultFor('Receiving message'));
 
-  if (inputName === 'input1') {
-    var message = msg.getBytes().toString('utf8');
+  if (inputName === 'sensorsInput') {
+    var message = JSON.parse(msg.getBytes().toString('utf8'));
     if (message) {
-      var outputMsg = new Message(message);
-      client.sendOutputEvent('output1', outputMsg, printResultFor('Sending received message'));
+      console.log(message);
+
+      var twin = await client.getTwin();
+
+      console.log(env.DeviceId);
+      console.log(message.moisture <= parseFloat(twin.properties.desired["moistureThreshold"]));
+
+      if (message.moisture <= parseFloat(twin.properties.desired["moistureThreshold"])) {
+        await client.invokeMethod(env.DeviceId, 'SoilMoistureSensor', { methodName: 'watering', payload: 100 });
+      }
     }
   }
 }

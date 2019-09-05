@@ -186,6 +186,7 @@
           "HumiditySensorToFilter": "FROM /messages/modules/HumiditySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "LuminositySensorToFilter": "FROM /messages/modules/LuminositySensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "SoilMoistureSensorToFilter": "FROM /messages/modules/SoilMoistureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
+          "SoilMoistureSensorToPlantWatering": "FROM /messages/modules/SoilMoistureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/PlantWatering/inputs/sensorsInput\")",
           "PressureSensorToFilter": "FROM /messages/modules/PressureSensor/outputs/* INTO BrokeredEndpoint(\"/modules/SensorDataFilter/inputs/sensorsInput\")",
           "FilterToKiosk": "FROM /messages/modules/SensorDataFilter/outputs/KioskOutput INTO BrokeredEndpoint(\"/modules/Kiosk/inputs/sensorsInput\")"
         },
